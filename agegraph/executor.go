@@ -619,13 +619,13 @@ func NewConnection(protocol, host, realm string, port *int32, auth, options map[
 		sslMode = "enable"
 	}
 
-	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=%s", host, *port, userName, pwd, dbName, sslMode)
+	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=%s sslsni=0", host, *port, userName, pwd, dbName, sslMode)
 	if sslMode == "verify-ca" {
 		caFile, ok := options[AGE_CA_FILE].(string)
 		if !ok {
 			return nil, errors.New("database connection option must contain the AGE_CA_FILE key specifying the database")
 		}
-		psqlInfo = fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=%s sslrootcert=%s", host, *port, userName, pwd, dbName, sslMode, caFile)
+		psqlInfo = fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=%s sslrootcert=%s sslsni=0", host, *port, userName, pwd, dbName, sslMode, caFile)
 	}
 
 	db, err := sql.Open("postgres", psqlInfo)
